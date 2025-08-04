@@ -3,138 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global IT Picnic Spot Voting</title>
+    <title>Global IT Picnic Spot Live Voting</title>
     <style>
-        body {
-            font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column; /* কন্টেইনারগুলোকে উপরে-নিচে সাজানোর জন্য */
-            padding: 20px;
-        }
-        .poll-container, .comment-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            margin-bottom: 25px; /* দুটি বক্সের মধ্যে ফাঁকা জায়গা */
-        }
-        h1, h2 {
-            color: #0056b3;
-            margin-bottom: 20px;
-        }
-        .total-votes-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #d9534f;
-            margin-top: -10px;
-            margin-bottom: 30px;
-        }
-        .place-option {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .place-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .place-name {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-        .vote-count {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #28a745;
-        }
-        .progress-bar-container {
-            background-color: #e9ecef;
-            border-radius: 5px;
-            height: 20px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .progress-bar {
-            background-color: #007bff;
-            height: 100%;
-            width: 0%;
-            border-radius: 5px;
-            transition: width 0.5s ease-in-out;
-        }
-        .vote-button {
-            margin-top: 10px;
-            background-color: #5bc0de;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .vote-button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        #reset-button {
-            margin-top: 10px;
-            background-color: #d9534f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        /* কমেন্ট বক্সের জন্য স্টাইল */
-        .comment-form textarea {
-            width: 95%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            min-height: 100px;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-        .comment-form button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-        }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f0f4f8; color: #333; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        .poll-container { background-color: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+        h1 { color: #0056b3; margin-bottom: 30px; }
+        .place-option { margin-bottom: 20px; text-align: left; }
+        .place-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .place-name { font-size: 1.2rem; font-weight: 500; }
+        .vote-count { font-size: 1.1rem; font-weight: bold; color: #28a745; }
+        .progress-bar-container { background-color: #e9ecef; border-radius: 5px; height: 20px; }
+        .progress-bar { background-color: #007bff; height: 100%; width: 0%; border-radius: 5px; transition: width 0.5s ease-in-out; }
+        .vote-button { margin-top: 10px; background-color: #5bc0de; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; }
+        .vote-button:disabled { background-color: #cccccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
-
     <div class="poll-container">
-        <h1>Global IT Picnic Spot ভোটিং</h1>
-        <p id="total-votes-display" class="total-votes-display">মোট ভোট: 0</p>
-        
-        <div id="poll-options">
-            </div>
-
-        <button id="reset-button">ভোট রিসেট করুন</button>
+        <h1>Global IT Picnic Spot লাইভ ভোটিং</h1>
+        <div id="poll-options"><p>ভোট লোড হচ্ছে...</p></div>
     </div>
 
-    <div class="comment-container">
-        <h2>মতামত ও নতুন জায়গার সাজেশন দিন</h2>
-        <form class="comment-form" action="mailto:Admin@globalitlanguage.com" method="post" enctype="text/plain">
-            <textarea name="Suggestion" placeholder="আপনার মতামত বা নতুন কোনো জায়গার নাম এখানে লিখুন..." required></textarea>
-            <button type="submit">সাজেশন পাঠান</button>
-        </form>
-    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
+        // আপনার দেওয়া Firebase কনফিগারেশন কোড
+        const firebaseConfig = {
+            apiKey: "AIzaSyAflAXm6GIz9eyyWG7hZkKp8OyQ0CUereg",
+            authDomain: "global-it-picnic-spot-voting.firebaseapp.com",
+            projectId: "global-it-picnic-spot-voting",
+            storageBucket: "global-it-picnic-spot-voting.appspot.com",
+            messagingSenderId: "836276674808",
+            appId: "1:836276674808:web:cae75b8695c870c7d25b0d"
+        };
+
+        // Firebase চালু করা
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
         document.addEventListener('DOMContentLoaded', function() {
             const places = [
                 { id: 'cumillaMoynamoti', name: 'কুমিল্লা ময়নামতি' },
@@ -147,86 +54,39 @@
             ];
 
             const pollOptionsContainer = document.getElementById('poll-options');
-            const resetButton = document.getElementById('reset-button');
-            const totalVotesElement = document.getElementById('total-votes-display');
-            
-            let votes = JSON.parse(localStorage.getItem('picnicSpotVotes')) || {};
+            const votesRef = database.ref('votes');
             let userHasVoted = localStorage.getItem('picnicUserHasVoted') === 'true';
 
-            function updateTotalVoteCount() {
-                const total = Object.values(votes).reduce((sum, count) => sum + count, 0);
-                totalVotesElement.innerText = `মোট ভোট: ${total}`;
-            }
+            votesRef.on('value', (snapshot) => {
+                const votes = snapshot.val() || {};
+                renderPoll(votes);
+            });
 
-            function renderPoll() {
+            function renderPoll(votes) {
                 pollOptionsContainer.innerHTML = '';
                 const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
-
                 places.forEach(place => {
-                    votes[place.id] = votes[place.id] || 0;
-                    const percentage = totalVotes === 0 ? 0 : (votes[place.id] / totalVotes) * 100;
-                    
-                    const optionHTML = `
-                        <div class="place-option">
-                            <div class="place-header">
-                                <span class="place-name">${place.name}</span>
-                                <span class="vote-count" id="count-${place.id}">${votes[place.id]} ভোট</span>
-                            </div>
-                            <div class="progress-bar-container">
-                                <div class="progress-bar" id="bar-${place.id}" style="width: ${percentage.toFixed(2)}%;"></div>
-                            </div>
-                            <button class="vote-button" data-place="${place.id}" ${userHasVoted ? 'disabled' : ''}>এখানে ভোট দিন</button>
-                        </div>
-                    `;
+                    const placeVotes = votes[place.id] || 0;
+                    const percentage = totalVotes === 0 ? 0 : (placeVotes / totalVotes) * 100;
+                    const optionHTML = `<div class="place-option"><div class="place-header"><span class="place-name">${place.name}</span><span class="vote-count">${placeVotes} ভোট</span></div><div class="progress-bar-container"><div class="progress-bar" style="width: ${percentage.toFixed(2)}%;"></div></div><button class="vote-button" data-place-id="${place.id}" ${userHasVoted ? 'disabled' : ''}>এখানে ভোট দিন</button></div>`;
                     pollOptionsContainer.insertAdjacentHTML('beforeend', optionHTML);
                 });
-                
-                updateTotalVoteCount();
                 addVoteButtonListeners();
             }
 
-            function handleVote(event) {
-                if (userHasVoted) return;
-                const placeId = event.target.dataset.place;
-                votes[placeId]++;
-                userHasVoted = true;
-                localStorage.setItem('picnicSpotVotes', JSON.stringify(votes));
-                localStorage.setItem('picnicUserHasVoted', 'true');
-                updateDisplay();
-            }
-
-            function updateDisplay() {
-                const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
-                places.forEach(place => {
-                    const countElement = document.getElementById(`count-${place.id}`);
-                    const barElement = document.getElementById(`bar-${place.id}`);
-                    const percentage = totalVotes === 0 ? 0 : (votes[place.id] / totalVotes) * 100;
-                    if (countElement) countElement.innerText = `${votes[place.id]} ভোট`;
-                    if (barElement) barElement.style.width = `${percentage.toFixed(2)}%`;
-                });
-                updateTotalVoteCount();
-                document.querySelectorAll('.vote-button').forEach(button => {
-                    button.disabled = true;
-                });
-            }
-            
             function addVoteButtonListeners() {
                 document.querySelectorAll('.vote-button').forEach(button => {
-                    button.addEventListener('click', handleVote);
+                    button.addEventListener('click', function() {
+                        if (userHasVoted) return;
+                        const placeId = this.dataset.placeId;
+                        const placeVoteRef = database.ref('votes/' + placeId);
+                        placeVoteRef.transaction((currentVotes) => (currentVotes || 0) + 1);
+                        localStorage.setItem('picnicUserHasVoted', 'true');
+                        userHasVoted = true;
+                    });
                 });
             }
-
-            resetButton.addEventListener('click', function() {
-                localStorage.removeItem('picnicSpotVotes');
-                localStorage.removeItem('picnicUserHasVoted');
-                votes = {};
-                userHasVoted = false;
-                renderPoll();
-            });
-
-            renderPoll();
         });
     </script>
-
 </body>
 </html>
