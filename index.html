@@ -17,20 +17,25 @@
         .progress-bar { background-color: #007bff; height: 100%; width: 0%; border-radius: 5px; transition: width 0.5s ease-in-out; }
         .vote-button { margin-top: 10px; background-color: #5bc0de; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; }
         .vote-button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        #loading-message, #voted-message { font-size: 1.2rem; color: #555; padding: 20px; }
     </style>
 </head>
 <body>
     <div class="poll-container">
         <h1>Global IT Picnic Spot ভোটিং</h1>
         <p id="total-votes-display" class="total-votes-display">মোট ভোট: 0</p>
-        <div id="poll-options"><p>ভোট লোড হচ্ছে...</p></div>
+        <div id="poll-options">
+            <p id="loading-message">ভোট লোড হচ্ছে...</p>
+        </div>
+        <div id="voted-message" style="display: none;">
+            <p>ধন্যবাদ! আপনার ভোট গ্রহণ করা হয়েছে।</p>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // আপনার সঠিক Firebase কনফিগারেশন কোড
         const firebaseConfig = {
             apiKey: "AIzaSyAflAXm6GIz9eyyWG7hZkKp8OyQ0CUereg",
             authDomain: "global-it-picnic-spot-voting.firebaseapp.com",
@@ -41,7 +46,6 @@
             appId: "1:836276674808:web:cae75b8695c870c7d25b0d"
         };
 
-        // Firebase চালু করা
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
@@ -58,18 +62,13 @@
 
             const pollOptionsContainer = document.getElementById('poll-options');
             const totalVotesElement = document.getElementById('total-votes-display');
+            const votedMessage = document.getElementById('voted-message');
             const votesRef = database.ref('votes');
-            let userHasVoted = localStorage.getItem('picnicUserHasVoted') === 'true';
-
-            // ডাটাবেস থেকে রিয়েল-টাইম আপডেট শোনার জন্য
-            votesRef.on('value', (snapshot) => {
-                const votes = snapshot.val() || {};
-                renderPoll(votes);
-            });
-
-            function renderPoll(votes) {
+            
+            // এই ফাংশনটি ডাটাবেস থেকে ভোট এনে দেখাবে
+            function displayResults(votes) {
                 const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
-                totalVotesElement.innerText = `মোট ভোট: ${totalVotes}`; // মোট ভোট আপডেট করা
+                totalVotesElement.innerText = `মোট ভোট: ${totalVotes}`;
 
                 const optionsHTML = places.map(place => {
                     const placeVotes = votes[place.id] || 0;
@@ -83,33 +82,53 @@
                             <div class="progress-bar-container">
                                 <div class="progress-bar" style="width: ${percentage.toFixed(2)}%;"></div>
                             </div>
-                            <button class="vote-button" data-place-id="${place.id}" ${userHasVoted ? 'disabled' : ''}>এখানে ভোট দিন</button>
                         </div>
                     `;
                 }).join('');
-
                 pollOptionsContainer.innerHTML = optionsHTML;
-                addVoteButtonListeners();
             }
 
-            function addVoteButtonListeners() {
+            // এই ফাংশনটি ভোট দেওয়ার অপশন দেখাবে
+            function displayVotingOptions() {
+                const optionsHTML = places.map(place => {
+                    return `
+                        <div class="place-option">
+                            <span class="place-name">${place.name}</span>
+                            <button class="vote-button" data-place-id="${place.id}">ভোট দিন</button>
+                        </div>
+                    `;
+                }).join('');
+                pollOptionsContainer.innerHTML = optionsHTML;
+
                 document.querySelectorAll('.vote-button').forEach(button => {
                     button.addEventListener('click', function() {
-                        if (userHasVoted) {
-                            alert("আপনি ইতিমধ্যে এই ডিভাইস থেকে ভোট দিয়েছেন।");
-                            return;
-                        }
                         const placeId = this.dataset.placeId;
                         const placeVoteRef = database.ref('votes/' + placeId);
                         
-                        placeVoteRef.transaction((currentVotes) => {
-                            return (currentVotes || 0) + 1;
-                        });
-
+                        placeVoteRef.transaction((currentVotes) => (currentVotes || 0) + 1);
                         localStorage.setItem('picnicUserHasVoted', 'true');
-                        userHasVoted = true;
+                        
+                        // ভোট দেওয়ার পর ফলাফল দেখানোর জন্য
+                        votesRef.once('value', (snapshot) => {
+                            displayResults(snapshot.val() || {});
+                            votedMessage.style.display = 'block'; // ধন্যবাদ মেসেজ দেখানো
+                            pollOptionsContainer.style.display = 'none'; // অপশন লুকিয়ে ফেলা
+                        });
                     });
                 });
+            }
+            
+            // মূল লজিক: ব্যবহারকারী ভোট দিয়েছে কি না, তা চেক করা
+            if (localStorage.getItem('picnicUserHasVoted') === 'true') {
+                // যদি ভোট দিয়ে থাকে, তাহলে সরাসরি ফলাফল দেখানো হবে
+                votesRef.once('value', (snapshot) => {
+                    displayResults(snapshot.val() || {});
+                    votedMessage.style.display = 'block';
+                    pollOptionsContainer.style.display = 'none';
+                });
+            } else {
+                // যদি ভোট না দিয়ে থাকে, তাহলে ভোট দেওয়ার অপশন দেখানো হবে
+                displayVotingOptions();
             }
         });
     </script>
