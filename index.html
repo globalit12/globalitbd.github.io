@@ -16,19 +16,21 @@
             margin: 0;
             padding: 20px;
         }
-        .poll-container {
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+        .poll-container, .comment-container {
             background-color: #ffffff;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
             text-align: center;
+            margin-bottom: 20px;
         }
-        h1 {
+        h1, h2 {
             color: #0056b3;
-            margin-bottom: 30px;
-            font-size: 2rem;
+            margin-bottom: 20px;
         }
         .place-option {
             margin-bottom: 20px;
@@ -49,24 +51,18 @@
             font-weight: bold;
             color: #28a745;
         }
-        /* নতুন স্টাইল: ভোটের বারের জন্য */
         .progress-bar-container {
             background-color: #e9ecef;
             border-radius: 5px;
             height: 20px;
             width: 100%;
-            overflow: hidden;
         }
         .progress-bar {
             background-color: #007bff;
             height: 100%;
-            width: 0%; /* শুরুতে প্রস্থ ০ থাকবে */
+            width: 0%;
             border-radius: 5px;
             transition: width 0.5s ease-in-out;
-            text-align: center;
-            color: white;
-            font-weight: bold;
-            line-height: 20px;
         }
         .vote-button {
             margin-top: 10px;
@@ -76,14 +72,12 @@
             padding: 8px 16px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1rem;
         }
         .vote-button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
         #reset-button {
-            margin-top: 20px;
             background-color: #d9534f;
             color: white;
             border: none;
@@ -91,20 +85,46 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        /* কমেন্ট বক্সের জন্য নতুন স্টাইল */
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+            margin-bottom: 10px;
+        }
+        .comment-form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
 
-    <div class="poll-container">
-        <h1>Global IT Picnic Spot ভোটিং</h1>
-        
-        <div id="poll-options">
-            </div>
+    <div class="container">
+        <div class="poll-container">
+            <h1>Global IT Picnic Spot ভোটিং</h1>
+            <div id="poll-options"></div>
+            <button id="reset-button">ভোট রিসেট করুন</button>
+        </div>
 
-        <button id="reset-button">ভোট রিসেট করুন (শুধু টেস্ট করার জন্য)</button>
+        <div class="comment-container">
+            <h2>মতামত ও নতুন জায়গার সাজেশন দিন</h2>
+            <form class="comment-form" action="mailto:your-email@example.com" method="post" enctype="text/plain">
+                <textarea name="suggestion" placeholder="আপনার মতামত বা নতুন কোনো জায়গার নাম এখানে লিখুন..." required></textarea>
+                <button type="submit">সাজেশন পাঠান</button>
+            </form>
+        </div>
     </div>
 
     <script>
+        // আগের জাভাস্ক্রিপ্ট কোডটি এখানে থাকবে
         document.addEventListener('DOMContentLoaded', function() {
             const places = [
                 { id: 'cumillaMoynamoti', name: 'কুমিল্লা ময়নামতি' },
