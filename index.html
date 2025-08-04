@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global IT Picnic Spot Live Voting</title>
+    <title>Global IT Picnic Spot Voting</title>
     <style>
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #f0f4f8; color: #333; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
         .poll-container { background-color: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="poll-container">
-        <h1>Global IT Picnic Spot লাইভ ভোটিং</h1>
+        <h1>Global IT Picnic Spot ভোটিং</h1>
         <div id="poll-options"><p>ভোট লোড হচ্ছে...</p></div>
     </div>
 
@@ -28,10 +28,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // আপনার দেওয়া Firebase কনফিগারেশন কোড
+        // আপনার দেওয়া সঠিক Firebase কনফিগারেশন কোড
         const firebaseConfig = {
             apiKey: "AIzaSyAflAXm6GIz9eyyWG7hZkKp8OyQ0CUereg",
             authDomain: "global-it-picnic-spot-voting.firebaseapp.com",
+            databaseURL: "https://global-it-picnic-spot-voting-default-rtdb.firebaseio.com",
             projectId: "global-it-picnic-spot-voting",
             storageBucket: "global-it-picnic-spot-voting.appspot.com",
             messagingSenderId: "836276674808",
