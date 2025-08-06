@@ -5,111 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global IT Picnic Spot Voting</title>
     <style>
-        body {
-            font-family: 'Hind Siliguri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
-        .poll-container, .comment-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        h1, h2 {
-            color: #0056b3;
-            margin-bottom: 20px;
-        }
-        .total-votes-display {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #d9534f;
-            margin-top: -10px;
-            margin-bottom: 30px;
-        }
-        .place-option {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .place-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .place-name {
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-        .vote-count {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #28a745;
-        }
-        .progress-bar-container {
-            background-color: #e9ecef;
-            border-radius: 5px;
-            height: 20px;
-            width: 100%;
-            overflow: hidden;
-        }
-        .progress-bar {
-            background-color: #007bff;
-            height: 100%;
-            width: 0%;
-            border-radius: 5px;
-            transition: width 0.5s ease-in-out;
-        }
-        .vote-button {
-            margin-top: 10px;
-            background-color: #5bc0de;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-        .vote-button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-        #loading-message, #voted-message {
-            font-size: 1.2rem; color: #555; padding: 20px;
-        }
-        /* কমেন্ট বক্সের জন্য স্টাইল */
-        .comment-form textarea {
-            width: 95%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            min-height: 100px;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-        .comment-form button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-        }
+        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f0f4f8; color: #333; display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        .poll-container { background-color: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 600px; text-align: center; }
+        h1 { color: #0056b3; margin-bottom: 15px; }
+        .total-votes-display { font-size: 1.5rem; font-weight: bold; color: #d9534f; margin-bottom: 30px; }
+        .place-option { margin-bottom: 20px; text-align: left; }
+        .place-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .place-name { font-size: 1.2rem; font-weight: 500; }
+        .vote-count { font-size: 1.1rem; font-weight: bold; color: #28a745; }
+        .progress-bar-container { background-color: #e9ecef; border-radius: 5px; height: 20px; }
+        .progress-bar { background-color: #007bff; height: 100%; width: 0%; border-radius: 5px; transition: width 0.5s ease-in-out; }
+        .vote-button { margin-top: 10px; background-color: #5bc0de; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; transition: background-color 0.2s; }
+        .vote-button:disabled { background-color: #cccccc; cursor: not-allowed; }
+        #loading-message, #voted-message { font-size: 1.2rem; color: #555; padding: 20px; }
     </style>
 </head>
 <body>
-
     <div class="poll-container">
         <h1>Global IT Picnic Spot ভোটিং</h1>
         <p id="total-votes-display" class="total-votes-display">মোট ভোট: 0</p>
@@ -119,14 +30,6 @@
         <div id="voted-message" style="display: none;">
             <p>ধন্যবাদ! আপনার ভোট গ্রহণ করা হয়েছে।</p>
         </div>
-    </div>
-
-    <div class="comment-container">
-        <h2>মতামত ও নতুন জায়গার সাজেশন দিন</h2>
-        <form class="comment-form" action="mailto:Admin@globalitlanguage.com" method="post" enctype="text/plain">
-            <textarea name="Suggestion" placeholder="আপনার মতামত বা নতুন কোনো জায়গার নাম এখানে লিখুন..." required></textarea>
-            <button type="submit">সাজেশন পাঠান</button>
-        </form>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -165,21 +68,10 @@
             function displayResults(votes) {
                 const totalVotes = Object.values(votes).reduce((sum, count) => sum + count, 0);
                 totalVotesElement.innerText = `মোট ভোট: ${totalVotes}`;
-
                 const optionsHTML = places.map(place => {
                     const placeVotes = votes[place.id] || 0;
                     const percentage = totalVotes === 0 ? 0 : (placeVotes / totalVotes) * 100;
-                    return `
-                        <div class="place-option">
-                            <div class="place-header">
-                                <span class="place-name">${place.name}</span>
-                                <span class="vote-count">${placeVotes} ভোট</span>
-                            </div>
-                            <div class="progress-bar-container">
-                                <div class="progress-bar" style="width: ${percentage.toFixed(2)}%;"></div>
-                            </div>
-                        </div>
-                    `;
+                    return `<div class="place-option"><div class="place-header"><span class="place-name">${place.name}</span><span class="vote-count">${placeVotes} ভোট</span></div><div class="progress-bar-container"><div class="progress-bar" style="width: ${percentage.toFixed(2)}%;"></div></div></div>`;
                 }).join('');
                 pollOptionsContainer.innerHTML = optionsHTML;
                 votedMessage.style.display = 'block';
@@ -187,38 +79,36 @@
 
             function displayVotingOptions() {
                 const optionsHTML = places.map(place => {
-                    return `
-                        <div class="place-option">
-                             <div class="place-header">
-                                <span class="place-name">${place.name}</span>
-                            </div>
-                            <button class="vote-button" data-place-id="${place.id}">এখানে ভোট দিন</button>
-                        </div>
-                    `;
+                    return `<div class="place-option"><div class="place-header"><span class="place-name">${place.name}</span></div><button class="vote-button" data-place-id="${place.id}">এখানে ভোট দিন</button></div>`;
                 }).join('');
                 pollOptionsContainer.innerHTML = optionsHTML;
-
+                addVoteButtonListeners();
+            }
+            
+            function addVoteButtonListeners() {
                 document.querySelectorAll('.vote-button').forEach(button => {
                     button.addEventListener('click', function() {
+                        // **ডাবল ক্লিক সমাধান:** ক্লিক করার সাথে সাথেই সব বাটন নিষ্ক্রিয় করে দেওয়া হয়
+                        document.querySelectorAll('.vote-button').forEach(btn => btn.disabled = true);
+
                         const placeId = this.dataset.placeId;
                         const placeVoteRef = database.ref('votes/' + placeId);
                         
-                        placeVoteRef.transaction((currentVotes) => (currentVotes || 0) + 1);
-                        localStorage.setItem('picnicUserHasVoted', 'true');
+                        placeVoteRef.transaction((currentVotes) => (currentVotes || 0) + 1)
+                            .then(() => {
+                                localStorage.setItem('picnicUserHasVoted', 'true');
+                                // ভোট সফলভাবে জমা হওয়ার পর ফলাফল দেখানো হয়
+                                votesRef.once('value', (snapshot) => {
+                                    displayResults(snapshot.val() || {});
+                                });
+                            });
                     });
                 });
             }
-            
+
             votesRef.on('value', (snapshot) => {
-                const votes = snapshot.val() || {};
                 if (localStorage.getItem('picnicUserHasVoted') === 'true') {
-                    displayResults(votes);
-                } else {
-                    // This is a failsafe to show results if for some reason the page loads after voting
-                    // but the voting options are still there. It syncs the view.
-                    if (document.querySelectorAll('.vote-button').length === 0) {
-                         displayResults(votes);
-                    }
+                    displayResults(snapshot.val() || {});
                 }
             });
 
